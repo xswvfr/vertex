@@ -23,6 +23,9 @@
         <template v-if="column.dataIndex === 'allTimeUpload'">
             {{ $formatSize(record.allTimeUpload) }} / {{ $formatSize(record.allTimeDownload) }}
         </template>
+        <template v-if="column.dataIndex === 'freeSpaceOnDisk'">
+            {{ $formatSize(record.freeSpaceOnDisk) }}
+        </template>
       </template>
     </a-table>
     <a-divider></a-divider>
@@ -89,6 +92,11 @@ export default {
         dataIndex: 'allTimeUpload',
         width: 64,
         sorter: (a, b) => a.allTimeUpload - b.allTimeUpload
+      }, {
+        title: '剩余空间',
+        dataIndex: 'freeSpaceOnDisk',
+        width: 64,
+        sorter: (a, b) => a.freeSpaceOnDisk - b.freeSpaceOnDisk
       }
     ];
     const trackerColumns = [

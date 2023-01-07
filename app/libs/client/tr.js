@@ -131,6 +131,7 @@ exports.getMaindata = async function (clientUrl, cookie) {
   maindata.allTimeDownload = sessionStat['cumulative-stats'].downloadedBytes;
   maindata.uploadSpeed = sessionStat.uploadSpeed;
   maindata.downloadSpeed = sessionStat.downloadSpeed;
+  maindata.freeSpaceOnDisk = sessionStat.freeSpaceOnDisk;
   return maindata;
 };
 

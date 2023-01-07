@@ -51,6 +51,7 @@ class ClientMod {
         client.downloadSpeed = global.runningClient[client.id].maindata.downloadSpeed;
         client.leechingCount = global.runningClient[client.id].maindata.leechingCount;
         client.seedingCount = global.runningClient[client.id].maindata.seedingCount;
+        client.freeSpaceOnDisk = global.runningClient[client.id].maindata.freeSpaceOnDisk;
       }
     }
     return clientList;
@@ -75,6 +76,8 @@ class ClientMod {
         c.downloadSpeed = global.runningClient[client.id].maindata.downloadSpeed;
         c.leechingCount = global.runningClient[client.id].maindata.leechingCount;
         c.seedingCount = global.runningClient[client.id].maindata.seedingCount;
+        c.freeSpaceOnDisk = global.runningClient[client.id].maindata.freeSpaceOnDisk;
+        
       }
       clientInfos.push(c);
     }
