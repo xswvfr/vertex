@@ -1,6 +1,4 @@
 node_modules
-app/static
-webui/public/assets/styles
 logs
 app/data
 app/db/sql.db
