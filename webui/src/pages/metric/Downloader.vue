@@ -95,7 +95,7 @@ export default {
       }, {
         title: '剩余空间',
         dataIndex: 'freeSpaceOnDisk',
-        width: 64,
+        width: 32,
         sorter: (a, b) => a.freeSpaceOnDisk - b.freeSpaceOnDisk
       }
     ];
