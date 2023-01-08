@@ -4,9 +4,12 @@ LABEL build_from="https://github.com/xswvfr/vertex"
 
 ENV TZ=Asia/Shanghai
 RUN \
-  apk add --no-cache gcc g++ python3 git cmake make npm libc-dev redis shadow bash xvfb tzdata nodejs chromium && \
+  apk add --no-cache gcc g++ python3 git cmake make npm libc-dev redis shadow bash xvfb tzdata nodejs chromium libstdc++ harfbuzz nss freetype ttf-freefont font-noto-emoji && \
+  rm -rf /var/cache/* && \
+  mkdir /var/cache/apk && \
   git clone https://github.com/xswvfr/vertex.git /app/vertex && \
   cd /app/vertex && \
+  cp /app/vertex/docker/local.conf /etc/fonts/local.conf && \
   npm set audit false && \
   PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm i --save && \
   cd /app/vertex/webui && \
