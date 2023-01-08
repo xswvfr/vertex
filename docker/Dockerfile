@@ -1,14 +1,20 @@
-FROM lswl/vertex-base:latest
+FROM alpine:3.13
 LABEL maintainer="lswl.in"
 LABEL build_from="https://github.com/xswvfr/vertex"
 
 ENV TZ=Asia/Shanghai
 RUN \
-  apk add --no-cache gcc g++ python3 git cmake make npm libc-dev && \
+  apk add --no-cache gcc g++ python3 git cmake make npm libc-dev redis shadow bash xvfb tzdata nodejs chromium && \
   git clone https://github.com/xswvfr/vertex.git /app/vertex && \
   cd /app/vertex && \
-  rm .git webui -rf && \
+  npm set audit false && \
   PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm i --save && \
+  cd /app/vertex/webui && \
+  npm set audit false && \
+  npm i --save --legacy-peer-deps && \
+  npm run build && \
+  cd /app/vertex && \
+  rm .git webui -rf && \
   mkdir /vertex && \
   ln -s /vertex/data /app/vertex/app/data && \
   ln -s /vertex/db /app/vertex/app/db && \
@@ -21,8 +27,9 @@ RUN \
   chmod +x /usr/bin/chromium && \
   apk del gcc g++ python3 git cmake make npm libc-dev && \
   echo 'bind 127.0.0.1' >> /app/redis.conf && \
-  echo 'daemonize yes' >> /app/redis.conf
-COPY src/static /app/vertex/app/static
+  echo 'daemonize yes' >> /app/redis.conf && \
+  echo -e "\033[42;37m Build Completed :).\033[0m\n"
+
 RUN \
   useradd -d /app/vertex -s /bin/sh vt && \
   chown -R vt /vertex && \
