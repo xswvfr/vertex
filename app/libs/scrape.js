@@ -144,7 +144,13 @@ const freeWrapper = {
   'hdbits.org': _freeHDBits,
   'www.hdarea.co': _freeHDArea,
   'byr.pt': _freeByrPT,
-  'www.hdtime.org': _free
+  'www.hdtime.org': _free,
+  'hdmayi.com': _free,
+  'pt.0ff.cc': _free,
+  'carpt.net': _free,
+  'wintersakura.net': _free,
+  'hdmayi.com': _free,
+  'pt.0ff.cc': _free,
 };
 
 const _hr = async function (url, cookie) {
