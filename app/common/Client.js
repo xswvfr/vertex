@@ -335,6 +335,12 @@ class Client {
     }
   }
 
+  async setLables (id, lables) {
+    if (this._client.type === 'Transmission') {
+      await this.client.setLables(this.clientUrl, this.cookie, id, lables);
+    }
+  }
+
   async addTorrentByTorrentFile (filepath, hash, isSkipChecking = false, uploadLimit = 0, downloadLimit = 0, savePath, category, autoTMM, paused) {
     const { statusCode } = await this.client.addTorrentByTorrentFile(this.clientUrl, this.cookie, filepath, isSkipChecking, uploadLimit, downloadLimit, savePath, category, autoTMM, this.firstLastPiecePrio, paused);
     if (statusCode !== 200) {
@@ -555,6 +561,9 @@ class Client {
     if (this._client.type === 'qBittorrent') {
       await this.client.setSpeedLimit(this.clientUrl, this.cookie, hash, type, speed);
     }
+    if (this._client.type === 'Transmission') {
+      await this.client.setSpeedLimit(this.clientUrl, this.cookie, hash, type, speed);
+    }
   }
 
   async setGlobalSpeedLimit (type, speed) {
@@ -580,10 +589,16 @@ class Client {
     if (this._client.type === 'qBittorrent') {
       await this.client.resumeTorrent(this.clientUrl, this.cookie, hash);
     }
+    if (this._client.type === 'Transmission') {
+      await this.client.resumeTorrent(this.clientUrl, this.cookie, hash);
+    }
   }
 
   async pauseTorrent (hash) {
     if (this._client.type === 'qBittorrent') {
+      await this.client.pauseTorrent(this.clientUrl, this.cookie, hash);
+    }
+    if (this._client.type === 'Transmission') {
       await this.client.pauseTorrent(this.clientUrl, this.cookie, hash);
     }
   }

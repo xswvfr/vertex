@@ -83,10 +83,10 @@ exports.getMaindata = async function (clientUrl, cookie) {
       arguments: {
         fields:
         [
-          'id', 'name', 'status', 'hashString', 'totalSize', 'percentDone',
+          'id', 'name', 'status', 'group', 'hashString', 'totalSize', 'percentDone',
           'addedDate', 'trackers', 'leftUntilDone', 'rateDownload', 'rateUpload',
           'uploadRatio', 'uploadedEver', 'downloadedEver', 'downloadDir', 'doneDate',
-          'labels','downloadLimit','downloadLimited','uploadLimit','uploadLimited','haveUnchecked','haveValid','isFinished','isStalled','recheckProgress'
+          'labels', 'downloadLimit', 'downloadLimited', 'uploadLimit', 'uploadLimited', 'haveUnchecked', 'haveValid', 'isFinished', 'isStalled', 'recheckProgress'
         ]
       },
       tag: ''
@@ -160,8 +160,21 @@ exports.getFiles = async (clientUrl, cookie, id) => {
   return files;
 };
 
-exports.setSpeedLimit = async (clientUrl, cookie, ids, type, speed) => {
-  
+exports.setSpeedLimit = async (clientUrl, cookie, id, type, speed) => {
+  let setarguments = {}
+  if (type === 'upload') {
+     setarguments = {
+      uploadLimited:true,
+      uploadLimit: speed,
+      ids: id
+    }
+  } else {
+     setarguments = {
+      downloadLimited:true,
+      downloadLimit: speed,
+      ids: id
+    }
+  }
   const message = {
     method: 'POST',
     url: clientUrl + '/transmission/rpc',
@@ -171,19 +184,16 @@ exports.setSpeedLimit = async (clientUrl, cookie, ids, type, speed) => {
     },
     form: JSON.stringify({
       method: 'torrent-set',
-      arguments: {
-        `${type}Limited`: true,
-        `${type}Limit`: speed,
-        ids: ids
-      },
+      arguments: setarguments,
       tag: ''
     })
   };
   const res = await util.requestPromise(message);
+  //console.log(res)
   return res;
 };
 
-exports.setLables = async (clientUrl, cookie, ids, lables) => {
+exports.setLables = async (clientUrl, cookie, id, lables) => {
   
   const message = {
     method: 'POST',
@@ -196,7 +206,7 @@ exports.setLables = async (clientUrl, cookie, ids, lables) => {
       method: 'torrent-set',
       arguments: {
         labels: lables.split(','),
-        ids: ids
+        ids: id
       },
       tag: ''
     })
@@ -205,7 +215,7 @@ exports.setLables = async (clientUrl, cookie, ids, lables) => {
   return res;
 };
 
-exports.resumeTorrent = async (clientUrl, cookie, ids) => {
+exports.resumeTorrent = async (clientUrl, cookie, id) => {
   const message = {
     method: 'POST',
     url: clientUrl + '/transmission/rpc',
@@ -216,7 +226,7 @@ exports.resumeTorrent = async (clientUrl, cookie, ids) => {
     form: JSON.stringify({
       method: 'torrent-start',
       arguments: {
-        ids: ids
+        ids: id
       },
       tag: ''
     })
@@ -225,7 +235,7 @@ exports.resumeTorrent = async (clientUrl, cookie, ids) => {
   return res;
 };
 
-exports.pauseTorrent = async (clientUrl, cookie, ids) => {
+exports.pauseTorrent = async (clientUrl, cookie, id) => {
   const message = {
     method: 'POST',
     url: clientUrl + '/transmission/rpc',
