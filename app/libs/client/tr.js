@@ -86,7 +86,7 @@ exports.getMaindata = async function (clientUrl, cookie) {
           'id', 'name', 'status', 'hashString', 'totalSize', 'percentDone',
           'addedDate', 'trackers', 'leftUntilDone', 'rateDownload', 'rateUpload',
           'uploadRatio', 'uploadedEver', 'downloadedEver', 'downloadDir', 'doneDate',
-          'labels'
+          'labels','downloadLimit','downloadLimited','uploadLimit','uploadLimited','haveUnchecked','haveValid','isFinished','isStalled','recheckProgress'
         ]
       },
       tag: ''
@@ -144,7 +144,7 @@ exports.getFiles = async (clientUrl, cookie, id) => {
       'X-Transmission-Session-Id': cookie.sessionId
     },
     form: JSON.stringify({
-      method: 'torrent-get',
+      method: 'torrent-set',
       arguments: {
         fields:
         [
@@ -158,4 +158,89 @@ exports.getFiles = async (clientUrl, cookie, id) => {
   const res = await util.requestPromise(message);
   const files = JSON.parse(res.body).arguments.torrents[0].files.map(item => { return { name: item.name, size: item.length }; });
   return files;
+};
+
+exports.setSpeedLimit = async (clientUrl, cookie, ids, type, speed) => {
+  
+  const message = {
+    method: 'POST',
+    url: clientUrl + '/transmission/rpc',
+    headers: {
+      Authorization: cookie.basic,
+      'X-Transmission-Session-Id': cookie.sessionId
+    },
+    form: JSON.stringify({
+      method: 'torrent-set',
+      arguments: {
+        `${type}Limited`: true,
+        `${type}Limit`: speed,
+        ids: ids
+      },
+      tag: ''
+    })
+  };
+  const res = await util.requestPromise(message);
+  return res;
+};
+
+exports.setLables = async (clientUrl, cookie, ids, lables) => {
+  
+  const message = {
+    method: 'POST',
+    url: clientUrl + '/transmission/rpc',
+    headers: {
+      Authorization: cookie.basic,
+      'X-Transmission-Session-Id': cookie.sessionId
+    },
+    form: JSON.stringify({
+      method: 'torrent-set',
+      arguments: {
+        labels: lables.split(','),
+        ids: ids
+      },
+      tag: ''
+    })
+  };
+  const res = await util.requestPromise(message);
+  return res;
+};
+
+exports.resumeTorrent = async (clientUrl, cookie, ids) => {
+  const message = {
+    method: 'POST',
+    url: clientUrl + '/transmission/rpc',
+    headers: {
+      Authorization: cookie.basic,
+      'X-Transmission-Session-Id': cookie.sessionId
+    },
+    form: JSON.stringify({
+      method: 'torrent-start',
+      arguments: {
+        ids: ids
+      },
+      tag: ''
+    })
+  };
+  const res = await util.requestPromise(message);
+  return res;
+};
+
+exports.pauseTorrent = async (clientUrl, cookie, ids) => {
+  const message = {
+    method: 'POST',
+    url: clientUrl + '/transmission/rpc',
+    headers: {
+      Authorization: cookie.basic,
+      'X-Transmission-Session-Id': cookie.sessionId
+    },
+    form: JSON.stringify({
+      method: 'torrent-stop',
+      arguments: {
+        ids: id
+      },
+      tag: ''
+    })
+  };
+  const res = await util.requestPromise(message);
+  return res;
 };
