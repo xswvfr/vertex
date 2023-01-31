@@ -117,6 +117,15 @@ const _freeByrPT = async function (url, cookie) {
   return state && ['free', 'twoupfree'].indexOf(state.className) !== -1;
 };
 
+const _freeNexus = async function (url, cookie) {
+  const d = await getDocument(url, cookie);
+  if (d.body.innerHTML.indexOf('userdetails') === -1) {
+    throw new Error('疑似登录状态失效, 请检查 Cookie');
+  }
+  const state = d.querySelector('#top font[class]');
+  return state && ['free', 'twoupfree'].indexOf(state.className) !== -1;
+};
+
 const freeWrapper = {
   'pt.btschool.club': _free,
   'club.hares.top': _freeHaresClub,
@@ -149,8 +158,11 @@ const freeWrapper = {
   'pt.0ff.cc': _free,
   'carpt.net': _free,
   'wintersakura.net': _free,
-  'hdmayi.com': _free,
-  'pt.0ff.cc': _free,
+  'hdpt.xyz': _free,
+  '1ptba.com': _free,
+  'gainbound.net': _free,
+  'sharkpt.net': _free,
+  'zmpt.cc': _free,
 };
 
 const _hr = async function (url, cookie) {
@@ -188,7 +200,8 @@ const hrWrapper = {
   'piggo.me': _hr,
   'hhanclub.top': _hr,
   'totheglory.im': _hrToTheGlory,
-  'chdbits.co': _hrToCHDBits
+  'chdbits.co': _hrToCHDBits,
+  'www.nicept.net': _hr
 };
 
 exports.free = async (url, cookie) => {
