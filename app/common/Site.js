@@ -126,7 +126,7 @@ class Site {
       const info = await this.getInfo();
       info.updateTime = moment().startOf('hour').unix();
       logger.debug(this.site, '站点数据成功抓取,', '数据如下:\n', info);
-      await util.runRecord('insert into sites (site, uid, username, upload, download, bonus, seeding_size, seeding_num, level, update_time) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)', [this.site, info.uid || 0, info.username, info.upload, info.download, info.bonus || 0, info.seedingSize || 0, info.seeding, info.level || '', info.updateTime]);
+      await util.runRecord('insert into sites (site, uid, username, upload, download, bonus, seeding_size, seeding_num, level, update_time) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)', [this.site, info.uid || 0, info.username, info.upload, info.download, info.bonus || 0, info.seedingSize || 0, info.seeding || 0, info.level || '', info.updateTime]);
       this.info = info;
       this.retryCount = 0;
     } catch (e) {
