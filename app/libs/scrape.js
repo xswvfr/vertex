@@ -163,6 +163,7 @@ const freeWrapper = {
   'gainbound.net': _free,
   'sharkpt.net': _free,
   'zmpt.cc': _free,
+  'lemonhd.org': _free,
 };
 
 const _hr = async function (url, cookie) {

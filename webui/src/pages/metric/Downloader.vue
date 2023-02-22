@@ -73,7 +73,7 @@ export default {
       {
         title: '别名',
         dataIndex: 'alias',
-        width: 32,
+        width: 64,
         defaultSortOrder: 'ascend',
         fixed: true,
         sorter: (a, b) => a.alias.localeCompare(b.alias)
@@ -85,12 +85,12 @@ export default {
       }, {
         title: '当前任务',
         dataIndex: 'seedingCount',
-        width: 48,
+        width: 32,
         sorter: (a, b) => a.seedingCount - b.seedingCount
       }, {
         title: '累计数据',
         dataIndex: 'allTimeUpload',
-        width: 64,
+        width: 48,
         sorter: (a, b) => a.allTimeUpload - b.allTimeUpload
       }, {
         title: '剩余空间',
